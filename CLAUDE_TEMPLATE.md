@@ -16,7 +16,7 @@
 ## 🤖 CLAUDE CODE 初始化工作流程
 
 ### 步驟 1：人類主導的基礎澄清 👨‍💻
-**Claude Code 直接與人類對話，無需 Subagent 統籌**
+**Claude Code 直接與人類對話**
 
 **Phase 1: 快速資訊收集**
 ```
@@ -40,7 +40,7 @@
 **Phase 3: 人類確認專案設定**
 ```
 📁 推薦專案結構：[簡易型/標準型/AI-ML型] (Claude 基於回答建議)
-🎛️ Subagent 建議頻率：[MEDIUM] (可調整)
+🎛️ Subagent 建議頻率：[HIGH/MEDIUM/LOW/OFF] (可調整)
 🔧 專案複雜度：[根據需求分析]
 
 ❓ 確認以上設定？(y/N)
@@ -248,11 +248,35 @@ SUGGEST_OFF    - 關閉自動建議
 ### 🔍 VibeCoding 範本審視觸發
 
 **基於以下範本自動分析並建議：**
-1. **架構設計**：`03_architecture_and_design_document.md`
-2. **API 規範**：`04_api_design_specification_template.md`
-3. **測試規範**：`04_module_specification_and_tests.md`
-4. **安全檢查**：`05_security_and_readiness_checklists.md`
-5. **專案結構**：`06_project_structure_guide.md`
+
+#### 📋 專案規劃與文檔範本
+1. **專案簡報與需求**：`01_project_brief_and_prd.md` → 📝 documentation-specialist
+2. **架構決策記錄**：`01_adr_template.md` → 🎯 workflow-template-manager
+3. **BDD 場景測試**：`02_bdd_scenarios_guide.md` → 🧪 e2e-validation-specialist
+
+#### 🏗️ 架構與設計範本
+4. **系統架構設計**：`03_architecture_and_design_document.md` → 🟡 code-quality-specialist
+5. **API 設計規範**：`04_api_design_specification_template.md` → 📝 documentation-specialist
+6. **模組測試規範**：`04_module_specification_and_tests.md` → 🟢 test-automation-engineer
+7. **專案結構指南**：`06_project_structure_guide.md` → 🎯 workflow-template-manager
+
+#### 🔍 程式碼分析範本
+8. **檔案依賴分析**：`08_file_dependencies_template.md` → 🟡 code-quality-specialist
+9. **類別關係分析**：`09_class_relationships_template.md` → 🟡 code-quality-specialist
+
+#### 🛡️ 品質保證範本
+10. **安全與就緒檢查**：`05_security_and_readiness_checklists.md` → 🔴 security-infrastructure-auditor
+
+### 🎯 範本觸發情境擴展
+
+| 開發情境 | 觸發範本 | 建議 Subagent | 觸發條件 |
+|---------|---------|--------------|----------|
+| 專案初始化 | `01_project_brief_and_prd.md` | 📝 documentation-specialist | 新專案開始 |
+| 架構重大決策 | `01_adr_template.md` | 🎯 workflow-template-manager | 技術選型 |
+| 功能驗收測試 | `02_bdd_scenarios_guide.md` | 🧪 e2e-validation-specialist | 完成核心功能 |
+| API 設計/變更 | `04_api_design_specification_template.md` | 📝 documentation-specialist | API 修改 |
+| 複雜依賴關係 | `08_file_dependencies_template.md` | 🟡 code-quality-specialist | 模組重構 |
+| 類別結構設計 | `09_class_relationships_template.md` | 🟡 code-quality-specialist | 物件導向設計 |
 
 ### 🎮 協作指令
 

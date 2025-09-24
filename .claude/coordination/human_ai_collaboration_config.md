@@ -16,13 +16,21 @@
 
 | 情境 | VibeCoding 範本 | 建議 Subagent | 觸發閾值 |
 |------|----------------|---------------|----------|
+| **專案規劃階段** |
+| 專案初始化 | `01_project_brief_and_prd.md` | 📝 documentation-specialist | HIGH |
+| 架構重大決策 | `01_adr_template.md` | 🎯 workflow-template-manager | HIGH |
+| 功能驗收規劃 | `02_bdd_scenarios_guide.md` | 🧪 e2e-validation-specialist | MEDIUM |
+| **開發階段** |
 | 完成核心功能 | `03_architecture_and_design_document.md` | 🟡 code-quality-specialist | MEDIUM |
 | API 變更/新增 | `04_api_design_specification_template.md` | 📝 documentation-specialist | HIGH |
 | 測試相關 | `04_module_specification_and_tests.md` | 🟢 test-automation-engineer | HIGH |
+| 專案結構變更 | `06_project_structure_guide.md` | 🎯 workflow-template-manager | LOW |
+| **程式碼分析階段** |
+| 複雜依賴關係 | `08_file_dependencies_template.md` | 🟡 code-quality-specialist | MEDIUM |
+| 類別結構設計 | `09_class_relationships_template.md` | 🟡 code-quality-specialist | MEDIUM |
+| **品質保證階段** |
 | 安全考量 | `05_security_and_readiness_checklists.md` | 🔴 security-infrastructure-auditor | HIGH |
-| 專案結構變更 | `06_project_structure_guide.md` | 🟡 workflow-template-manager | LOW |
 | 準備部署 | `05_security_and_readiness_checklists.md` | ⚡ deployment-operations-engineer | HIGH |
-| UI/UX 變更 | `02_bdd_scenarios_guide.md` | 🧪 e2e-validation-specialist | MEDIUM |
 
 ### 🔍 審視邏輯
 
@@ -86,31 +94,34 @@ def parse_natural_language_intent(user_message):
     intent_keywords = {
         'code-quality-specialist': [
             '檢查程式碼', '程式碼品質', '重構', 'code quality', 'refactor',
-            '程式碼審查', 'code review', '優化程式碼'
+            '程式碼審查', 'code review', '優化程式碼', '依賴分析',
+            '類別關係', '模組依賴', 'dependency', 'class relationship'
         ],
         'security-infrastructure-auditor': [
             '安全', '安全檢查', '漏洞', 'security', 'vulnerability',
-            '安全性', '檢查安全性', 'audit'
+            '安全性', '檢查安全性', 'audit', '安全稽核'
         ],
         'test-automation-engineer': [
             '測試', '跑測試', '覆蓋率', 'test', 'testing', 'coverage',
-            '單元測試', '測試分析'
+            '單元測試', '測試分析', '模組測試', 'module test'
         ],
         'deployment-operations-engineer': [
             '部署', '上線', '發布', 'deploy', 'deployment', 'release',
-            '準備部署', 'production'
+            '準備部署', 'production', '就緒檢查'
         ],
         'documentation-specialist': [
             '文檔', '文件', 'documentation', 'docs', 'API文檔',
-            '更新說明', '說明文件'
+            '更新說明', '說明文件', '專案簡報', 'project brief',
+            'PRD', '需求文件', 'API規範', 'api spec'
         ],
         'e2e-validation-specialist': [
             '端到端', 'e2e', 'UI測試', '使用者流程', 'user flow',
-            '整合測試', 'ui test'
+            '整合測試', 'ui test', 'BDD', '驗收測試', '場景測試'
         ],
         'workflow-template-manager': [
             '專案結構', '架構', '規劃', 'structure', 'architecture',
-            'plan', '專案規劃'
+            'plan', '專案規劃', '架構決策', 'ADR', '技術選型',
+            'decision record', '決策記錄'
         ]
     }
 
