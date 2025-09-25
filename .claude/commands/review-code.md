@@ -4,14 +4,14 @@ argument-hint: [path] (optional, defaults to current directory)
 allowed-tools: Read(/**), Grep(*), Glob(*)
 ---
 
-# 🔍 VibeCoding Template-Based Code Review
+# 🔍 TaskMaster Template-Based Code Review
 
 ## Analysis Target
 Analyzing code at: **$1** (or current directory if not specified)
 
-## 🎯 VibeCoding Template Assessment
+## 🎯 TaskMaster VibeCoding Integration
 
-Based on the 10 VibeCoding workflow templates, let me analyze your code:
+TaskMaster will perform intelligent code review based on VibeCoding templates with Hub coordination:
 
 ### 📋 Template Categories Being Checked:
 
@@ -33,43 +33,53 @@ Based on the 10 VibeCoding workflow templates, let me analyze your code:
 - `01_adr_template.md` → Architecture decision tracking
 - `02_bdd_scenarios_guide.md` → Behavior specification
 
-## 🚦 Analysis Results & Subagent Suggestions
+## 🎯 TaskMaster Hub Coordination Results
 
-**Based on current code analysis:**
+**TaskMaster intelligent analysis with Hub-and-Spoke coordination:**
 
 ```
-📊 VibeCoding Template Review Results:
+📊 TaskMaster Code Review Results:
 🎯 分析路徑: $1
-🔍 偵測情境: [Code analysis in progress...]
+🔍 Hub 情境分析: [Analyzing with enhanced AI coordination...]
 
-🤖 建議 Subagent 協作:
-  🟡 code-quality-specialist - 程式碼重構機會分析
-  🔴 security-infrastructure-auditor - 安全合規檢查
-  🟢 test-automation-engineer - 測試覆蓋率評估
-  📝 documentation-specialist - 文檔同步更新
-  🎯 workflow-template-manager - 架構規範審查
+🤖 TaskMaster Hub 建議智能體協調:
+  🟡 code-quality-specialist (95% 適合度) - 精深程式碼品質分析
+  🔴 security-infrastructure-auditor (88% 適合度) - 安全基礎設施稽核
+  🟢 test-automation-engineer (82% 適合度) - 測試自動化與覆蓋率
+  📝 documentation-specialist (76% 適合度) - 技術文檔精進
+  🎯 workflow-template-manager (85% 適合度) - 工作流範本管理
 
-❓ 選擇要啟動的 Subagent：
-  [1] 🟡 程式碼品質檢查
-  [2] 🔴 安全性審查
-  [3] 🟢 測試分析
-  [4] 📝 文檔更新
-  [5] 🎯 架構審查
-  [A] 全部啟動
-  [N] 跳過建議
+🎯 Hub 協調建議:
+  🥇 最佳組合: code-quality + security + workflow-template
+  ⏱️ 預估時間: 25-35 分鐘順序執行
+  📊 信心指數: 92%
 
-請輸入選擇 (1-5, A, 或 N):
+❓ TaskMaster 人類駕駛員決策:
+  [1] 🟡 啟動程式碼品質專家
+  [2] 🔴 啟動安全稽核專家
+  [3] 🎯 啟動最佳組合 (Hub 建議)
+  [4] 🔧 自定義協調策略
+  [5] 👨‍💻 人類接管審查
+  [P] 暫停 TaskMaster
+
+請選擇 (1-5 或 P) - 您是鋼彈駕駛員：
 ```
 
-## 🎛️ 人類主導決策
+## 🤖⚔️ TaskMaster 人類主導機制
 
-**Remember: You are the 鋼彈駕駛員 (mech pilot)**
-- All suggestions require your explicit approval
-- You can mix and match Subagents based on your priorities
-- Natural language commands also work ("檢查程式碼品質")
+**💪 You are the 鋼彈駕駛員 (Gundam Pilot) - TaskMaster is your intelligent co-pilot**
+- TaskMaster Hub provides coordinated suggestions with confidence scores
+- All agent delegations require your explicit confirmation
+- You can override any Hub recommendation with custom strategies
+- Emergency controls: pause, stop, or take manual control anytime
+- Natural language works: "啟動 TaskMaster 程式碼審查"
 
-## 🔄 Integration with Current Settings
+## 🔄 TaskMaster Integration Status
 
-This review respects your current suggestion mode and VibeCoding template preferences. The analysis is based on the established human-AI collaboration patterns in your `CLAUDE.md` configuration.
+This enhanced review leverages:
+- **Hub-and-Spoke Intelligence**: Coordinated agent suggestions
+- **VibeCoding Templates**: Smart template-driven analysis
+- **Human Control Gates**: All critical decisions require your approval
+- **Persistent Learning**: TaskMaster learns from your preferences
 
-**Ready for your command!** 🤖⚔️
+**TaskMaster ready for your command!** 🚀🤖⚔️
