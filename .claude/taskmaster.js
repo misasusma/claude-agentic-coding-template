@@ -235,8 +235,13 @@ class TaskMaster {
     async handleDocumentGenerationTask(task, agent, hubAnalysis) {
         console.log(`📄 處理文檔生成任務: ${task.deliverable}`);
 
+        // 如果 DocumentGenerator 尚未初始化，則創建一個
         if (!this.docGenerator) {
-            throw new Error('DocumentGenerator 尚未初始化');
+            console.log('📋 初始化 DocumentGenerator...');
+            this.docGenerator = new DocumentGenerator(task.title || 'TaskMaster-Generated-Project', {
+                complexity: 'medium',
+                tasks: []
+            });
         }
 
         const fs = require('fs').promises;
