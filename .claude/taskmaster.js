@@ -204,53 +204,82 @@ class TaskMaster {
             throw new Error('DocumentGenerator 尚未初始化');
         }
 
-        let generatedDocument = '';
-        const templatePath = `VibeCoding_Workflow_Templates/${task.template}`;
+        const fs = require('fs').promises;
+        const path = require('path');
 
         try {
+            let generatedResult = {};
+            const templatePath = `VibeCoding_Workflow_Templates/${task.template}`;
+
+            // 檢查範本文件是否存在
+            try {
+                await fs.access(templatePath);
+            } catch (error) {
+                console.log(`⚠️ 範本文件不存在: ${templatePath}`);
+                throw new Error(`範本文件不存在: ${templatePath}`);
+            }
+
+            // 讀取範本內容
+            const templateContent = await fs.readFile(templatePath, 'utf8');
+
             // 根據任務類型調用對應的文檔生成方法
             if (task.template.includes('project_brief_and_prd')) {
-                generatedDocument = await this.docGenerator.generatePRD(templatePath, {
+                generatedResult = await this.docGenerator.generatePRD(templateContent, {
                     businessBackground: '基於 VibeCoding 7問澄清的商業需求分析',
                     functionalRequirements: '從範本提取的功能性需求',
                     technicalConstraints: '技術限制和非功能性需求'
                 });
             } else if (task.template.includes('architecture_and_design')) {
-                generatedDocument = await this.docGenerator.generateArchitecture(templatePath, {
+                generatedResult = await this.docGenerator.generateArchitecture(templateContent, {
                     systemOverview: '基於 PRD 的系統概述',
                     componentDesign: '主要組件設計',
                     dataFlow: '數據流設計'
                 });
             } else if (task.template.includes('api_design_specification')) {
-                generatedDocument = await this.docGenerator.generateAPISpec(templatePath, {
+                generatedResult = await this.docGenerator.generateAPISpec(templateContent, {
                     endpoints: '基於架構設計的 API 端點',
                     authentication: '身份驗證機制',
                     errorHandling: '錯誤處理策略'
                 });
             } else if (task.template.includes('module_specification')) {
-                generatedDocument = await this.docGenerator.generateModuleSpec(templatePath, {
+                generatedResult = await this.docGenerator.generateModuleSpec(templateContent, {
                     modules: '基於架構的模組劃分',
                     interfaces: '模組間介面定義',
                     testStrategy: '測試策略'
                 });
+            } else {
+                // 通用文檔生成
+                generatedResult = await this.docGenerator.generateFromTemplate(task.template, templateContent);
             }
 
-            // 確保 docs 目錄存在並寫入文檔
-            const fs = require('fs').promises;
-            const path = require('path');
-
+            // 確保目標目錄存在
             const docsDir = path.dirname(task.deliverable);
             await fs.mkdir(docsDir, { recursive: true });
-            await fs.writeFile(task.deliverable, generatedDocument, 'utf8');
+
+            // 寫入生成的文檔
+            let documentContent = '';
+            if (typeof generatedResult === 'string') {
+                documentContent = generatedResult;
+            } else if (generatedResult && typeof generatedResult === 'object') {
+                // 如果返回的是對象，從對象中提取內容
+                documentContent = generatedResult.content || generatedResult.document || JSON.stringify(generatedResult, null, 2);
+            } else {
+                throw new Error('文檔生成器返回了無效的結果');
+            }
+
+            await fs.writeFile(task.deliverable, documentContent, 'utf8');
+            console.log(`✅ 文檔已成功寫入: ${task.deliverable}`);
 
             return {
                 output: `📄 文檔已生成: ${task.deliverable}`,
                 files: [task.deliverable],
                 notes: `文檔基於範本 ${task.template} 生成，等待駕駛員審查`,
-                reviewRequired: task.reviewRequired
+                reviewRequired: task.reviewRequired,
+                generatedResult: generatedResult
             };
 
         } catch (error) {
+            console.error(`❌ 文檔生成失敗: ${error.message}`);
             throw new Error(`文檔生成失敗: ${error.message}`);
         }
     }
@@ -773,41 +802,35 @@ class DocumentGenerator {
     }
 
     async generatePRD(templateContent, context) {
-        const document = `# ${this.projectName} - 專案需求文檔 (PRD)
+        // 基於真實的 VibeCoding 範本內容進行填充
+        const customizedDocument = templateContent
+            // 替換專案名稱
+            .replace(/\[專案名稱\]/g, this.projectName)
+            .replace(/\[專案代號\/名稱\]/g, this.projectName)
 
-## 專案概述
-**專案名稱**: ${this.projectName}
-**建立日期**: ${new Date().toISOString().split('T')[0]}
-**狀態**: 待駕駛員審查
+            // 填入基本資訊
+            .replace(/YYYY-MM-DD/g, new Date().toISOString().split('T')[0])
+            .replace(/\[產品經理\]/g, context.productManager || '駕駛員 (人類)')
+            .replace(/\[技術負責人, 設計負責人\]/g, '駕駛員 + TaskMaster 系統')
+            .replace(/\[草稿 \(Draft\), 審核中 \(In Review\), 已批准 \(Approved\)\]/g, '草稿 (Draft) - 待駕駛員審查')
 
-## 商業背景
-${context.businessBackground || '基於 VibeCoding 7問澄清的商業需求分析'}
+            // 填入狀態資訊
+            .replace(/\[規劃中 \/ 開發中 \/ 已上線\]/g, '規劃中')
+            .replace(/PM: \[姓名\]/g, `PM: ${context.productManager || '駕駛員'}`)
+            .replace(/Lead Engineer: \[姓名\]/g, `Lead Engineer: TaskMaster + Claude`)
+            .replace(/UX Designer: \[姓名\]/g, `UX Designer: ${context.uxDesigner || '待指定'}`)
 
-## 核心功能需求
-${context.coreFeatures ? context.coreFeatures.map(f => `- ${f}`).join('\n') : '待詳述'}
+            // 填入商業內容
+            .replace(/\[內容\]/g, context.businessBackground || '基於 VibeCoding 7問澄清的具體需求，駕駛員將在此填入商業背景和痛點分析')
 
-## 用戶故事
-${context.userStories || '基於需求分析產出的用戶故事'}
+            // 填入功能需求
+            .replace(/- \[功能模組 A: 核心功能\]/g, context.coreFeatures ? context.coreFeatures.map(f => `- ${f}`).join('\n') : '- 待駕駛員定義核心功能模組')
+            .replace(/- \[功能模組 B: 核心功能\]/g, '')
 
-## 技術約束
-${context.technicalConstraints || '基於專案特性識別的技術限制'}
+            // 添加生成元資料
+            + `\n\n---\n**📋 TaskMaster 生成資訊**:\n- 基於範本: VibeCoding 01_project_brief_and_prd.md\n- 生成時間: ${new Date().toISOString()}\n- 狀態: 待駕駛員填充具體業務內容並審查\n- 下一步: 駕駛員審查後，系統將基於此 PRD 生成架構設計文檔`;
 
-## 成功標準
-${context.successCriteria || '基於專案目標定義的可測量標準'}
-
-## 風險評估
-${context.risks || 'Phase 1 識別的專案風險'}
-
----
-**📋 駕駛員審查點**: 請檢查此文檔是否準確反映專案需求，確認後可進入 Phase 2
-**🔄 基於範本**: VibeCoding 01_project_brief_and_prd.md
-**⏱️ 生成時間**: ${new Date().toISOString()}
-`;
-
-        const filename = `${this.projectName}-PRD.md`;
-        const fs = require('fs').promises;
-        await fs.writeFile(`${this.docsDir}/${filename}`, document);
-        return { filename, path: `${this.docsDir}/${filename}`, requiresReview: true };
+        return customizedDocument;
     }
 
     async generateArchitecture(templateContent, context) {
@@ -845,10 +868,7 @@ ${context.security || '基於 VibeCoding 安全範本的設計考量'}
 **⏱️ 生成時間**: ${new Date().toISOString()}
 `;
 
-        const filename = `${this.projectName}-Architecture.md`;
-        const fs = require('fs').promises;
-        await fs.writeFile(`${this.docsDir}/${filename}`, document);
-        return { filename, path: `${this.docsDir}/${filename}`, requiresReview: true };
+        return document;
     }
 
     async generateAPISpec(templateContent, context) {
@@ -890,10 +910,7 @@ ${context.rateLimit || '基於系統容量的限流設計'}
 **⏱️ 生成時間**: ${new Date().toISOString()}
 `;
 
-        const filename = `${this.projectName}-API-Spec.md`;
-        const fs = require('fs').promises;
-        await fs.writeFile(`${this.docsDir}/${filename}`, document);
-        return { filename, path: `${this.docsDir}/${filename}`, requiresReview: true };
+        return document;
     }
 
     async generateModuleSpec(templateContent, context) {
@@ -933,10 +950,7 @@ ${context.developmentPriority || '基於依賴關係的開發順序'}
 **⏱️ 生成時間**: ${new Date().toISOString()}
 `;
 
-        const filename = `${this.projectName}-Modules.md`;
-        const fs = require('fs').promises;
-        await fs.writeFile(`${this.docsDir}/${filename}`, document);
-        return { filename, path: `${this.docsDir}/${filename}`, requiresReview: true };
+        return document;
     }
 
     async generateGenericDocument(templateName, templateContent, context) {
@@ -953,10 +967,7 @@ ${context.content || '基於 VibeCoding 範本客製化的專案文檔'}
 **📋 駕駛員審查點**: 請檢查此文檔內容，確認後可進行後續工作
 `;
 
-        const filename = `${this.projectName}-${templateName.replace(/\.md$/, '')}.md`;
-        const fs = require('fs').promises;
-        await fs.writeFile(`${this.docsDir}/${filename}`, document);
-        return { filename, path: `${this.docsDir}/${filename}`, requiresReview: true };
+        return document;
     }
 }
 
