@@ -169,26 +169,61 @@ class TaskMaster {
         console.log('⏳ 執行中...');
 
         try {
+            let result;
+
             // 檢查是否為文檔生成任務
             if (task.deliverable && task.deliverable.endsWith('.md')) {
-                return await this.handleDocumentGenerationTask(task, agent, hubAnalysis);
+                result = await this.handleDocumentGenerationTask(task, agent, hubAnalysis);
             }
-
             // 檢查是否為審查閘道任務
-            if (task.isGate) {
-                return await this.handleReviewGateTask(task, agent, hubAnalysis);
+            else if (task.isGate) {
+                result = await this.handleReviewGateTask(task, agent, hubAnalysis);
+            }
+            // 一般任務處理
+            else {
+                // TODO: 實現與 Claude Code Subagent 的實際通信
+                await this.sleep(1000); // 模擬執行時間
+
+                result = {
+                    output: `✅ ${agent} 完成任務: ${task.title}`,
+                    files: [`${task.id}-result.txt`],
+                    notes: `Task executed by ${agent}`
+                };
             }
 
-            // 一般任務處理
-            // TODO: 實現與 Claude Code Subagent 的實際通信
-            await this.sleep(1000); // 模擬執行時間
+            // 記錄 Subagent 執行結果到上下文
+            const contextManager = new ContextManager();
+            await contextManager.writeAgentReport(agent, {
+                task: `${task.title} (ID: ${task.id})`,
+                result: result.output || '任務執行完成',
+                files: result.files || [],
+                issues: result.issues || [],
+                recommendations: result.recommendations || [],
+                technical: JSON.stringify({
+                    hubAnalysis: hubAnalysis,
+                    taskMetadata: {
+                        phase: task.phase,
+                        priority: task.priority,
+                        deliverable: task.deliverable
+                    },
+                    executionResult: result
+                }, null, 2)
+            });
 
-            return {
-                output: `✅ ${agent} 完成任務: ${task.title}`,
-                files: [`${task.id}-result.txt`],
-                notes: `Task executed by ${agent}`
-            };
+            console.log(`📝 已記錄 ${agent} 執行結果到 .claude/context`);
+            return result;
+
         } catch (error) {
+            // 記錄錯誤到上下文
+            const contextManager = new ContextManager();
+            await contextManager.writeAgentReport(agent, {
+                task: `${task.title} (ID: ${task.id})`,
+                result: `執行失敗: ${error.message}`,
+                issues: [error.message],
+                recommendations: ['檢查任務配置', '重試執行', '聯繫開發團隊'],
+                technical: error.stack
+            });
+
             console.error(`❌ 任務執行失敗: ${error.message}`);
             throw error;
         }
